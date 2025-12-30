@@ -1,0 +1,21 @@
+
+# 呼入并发限制接口
+
+1.1 呼入申请
+  路由         /callin/apply
+  请求方式      post
+  请求头        Content-Type = application/x-www-form-urlencoded
+  数据格式      form
+  返回数据格式  json
+
+1.2 呼入申请
+  路由         /callin/release
+  请求方式      post
+  请求头        Content-Type = application/x-www-form-urlencoded
+  数据格式      form
+  返回数据格式  json
+
+# 定时更新
+  企业呼入限制
+  监控
+  申请超时自动释放

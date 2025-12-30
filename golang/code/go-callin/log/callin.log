@@ -1,0 +1,26 @@
+[INFO ]2020/08/27 13:36:12.380366 amqp.go:196: recv 
+[ERROR]2020/08/27 13:36:12.380522 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 13:36:12.380622 amqp.go:196: recv 
+[ERROR]2020/08/27 13:36:12.380685 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 13:36:12.380715 amqp.go:196: recv 
+[ERROR]2020/08/27 13:36:12.380737 amqp.go:148: connetion is closed consumingException (501) Reason: "read tcp 192.168.25.53:60427->192.168.188.46:5672: i/o timeout"
+[INFO ]2020/08/27 13:36:12.380837 amqp.go:82: connect to rabbitmq server ...
+[INFO ]2020/08/27 13:36:12.380869 amqp.go:185: producing return
+[ERROR]2020/08/27 13:36:12.380915 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 13:36:12.380986 amqp.go:196: recv 
+[ERROR]2020/08/27 13:36:12.381019 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 13:36:12.381042 amqp.go:204: producing return
+[INFO ]2020/08/27 13:36:12.795188 amqp.go:85: connect rabbitmq success
+[INFO ]2020/08/27 14:01:17.761587 amqp.go:196: recv 
+[ERROR]2020/08/27 14:01:17.761673 amqp.go:148: connetion is closed consumingException (501) Reason: "read tcp 192.168.25.53:61602->192.168.188.46:5672: i/o timeout"
+[INFO ]2020/08/27 14:01:17.761748 amqp.go:82: connect to rabbitmq server ...
+[ERROR]2020/08/27 14:01:17.761777 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 14:01:17.761837 amqp.go:185: producing return
+[INFO ]2020/08/27 14:01:17.761887 amqp.go:196: recv 
+[ERROR]2020/08/27 14:01:17.761914 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 14:01:17.761937 amqp.go:196: recv 
+[ERROR]2020/08/27 14:01:17.761957 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 14:01:17.761977 amqp.go:196: recv 
+[ERROR]2020/08/27 14:01:17.761998 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 14:01:17.762018 amqp.go:204: producing return
+[INFO ]2020/08/27 14:01:18.275735 amqp.go:85: connect rabbitmq success

@@ -1,0 +1,14 @@
+{
+  "服务":"监听地址接口",
+  "HTTP_ADDR": ":16215",
+  "https":"0 关闭https   1 开启https",
+  "EN_TLS": "0",
+  "CRT": "/opt/pbx/cert/server_record.crt",
+  "KEY": "/opt/pbx/cert/server_record.key",
+
+  "文件地址": "录音文件存放",
+  "RECORD_DIRS": ["/home/tvsrecord_all/asterisk/recording/","/mnt/nfs/tvsrecord_all/asterisk/recording/"],
+
+  "日志配置": "日志路径",
+  "LOG_DIR":"/home/log2/cdr_167/go-record-https"
+}

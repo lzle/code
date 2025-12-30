@@ -1,0 +1,5 @@
+[INFO ]2020/08/27 09:52:06.450604 log.go:32: [cron job] Every hour rotation log file.
+[ERROR]2020/08/27 09:52:06.451005 mysql.go:16: open mysql failed sql: unknown driver "mysql" (forgotten import?)
+[INFO ]2020/08/27 09:52:06.451033 amqp.go:82: connect to rabbitmq server ...
+[INFO ]2020/08/27 09:52:06.515728 amqp.go:85: connect rabbitmq success
+[INFO ]2020/08/27 10:00:00.002210 log.go:116: rotation log

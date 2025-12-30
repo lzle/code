@@ -1,0 +1,16 @@
+
+# 技能组接口
+
+1.1 技能组预览接口
+  路由         /group/preview
+  请求方式      post
+  请求头        Content-Type = application/x-www-form-urlencoded
+  数据格式      form
+  返回数据格式  json
+
+1.2 技能组详情接口
+  路由          /group/detail
+  请求方式      post
+  请求头        Content-Type = application/x-www-form-urlencoded
+  数据格式      form
+  返回数据格式  json

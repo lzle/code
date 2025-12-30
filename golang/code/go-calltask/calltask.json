@@ -1,0 +1,58 @@
+{
+  "数据库配置": "从数据库中读取信息",
+  "dbConfig": {
+    "host":"192.168.188.62",
+    "port" : 3306,
+    "db" : "pbx",
+    "user" : "remote",
+    "passwd" : "BrK***w8FhamUKRu"
+  },
+
+  "Redis配置": "从Redis中读取信息",
+  "redisConfig": {
+    "host":"192.168.188.48",
+    "port" : 6379
+  },
+
+  "本地redis配置": "存储坐席加入任务信息",
+  "localRedis": {
+    "host":"192.168.188.46",
+    "port" : 6379
+  },
+
+  "rabbitmq配置": "接收发送信息",
+  "amqpConfig": {
+    "host":"192.168.188.48",
+    "port" : 5672,
+    "vhost" : "/",
+    "user" : "guest",
+    "passwd" : "guest",
+    "serverid" : "go-calltask",
+    "exchange": "CTI_and_ARI_exchange"
+  },
+
+  "录音配置": "录音路径",
+  "abs_record_path":"/home/tvsrecord/asterisk/recording/",
+  "record_dirname":"go-calltask",
+
+  "日志配置": "日志路径",
+  "log_path":"/home/log2/go-calltask/",
+
+  "话单配置": "话单路径",
+  "cdr_path":"/cdr/master/",
+
+  "任务url配置": "推送、请求http消息",
+  "update_task_detail_url": "http://192.168.188.100:8001/get/task/detail",
+  "坐席url配置": "推送、请求http消息",
+  "get_task_agent_url": "http://192.168.188.100:8001/get/agent/in/task",
+  "企业url配置": "推送、请求http消息",
+  "update_comp_detail_url": "http://192.168.188.100:8001/get/company/info",
+  "获取任务配置": "获取启动中的任务",
+  "active_task_url": "http://192.168.188.100:8001/get/running/task",
+
+  "空号服务": "111，112，113，114",
+  "recognition_url": "http://192.168.188.46:18080/recognition/apply",
+
+  "号码前缀": "禁呼匹配",
+  "number_prefix": ["110","120","119","999"]
+}

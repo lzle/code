@@ -1,0 +1,44 @@
+[INFO ]2020/08/27 11:00:33.504788 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.504980 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505038 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505068 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505091 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505150 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505197 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505228 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505257 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505286 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505316 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505343 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505368 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505392 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505423 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505443 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505459 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.505476 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.505492 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506052 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506433 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506461 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506483 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506511 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506552 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506582 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506603 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506624 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506644 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506663 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506682 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506704 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506724 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506765 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506787 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506813 amqp.go:199: failed to JSON data.Body: EOF[]
+[ERROR]2020/08/27 11:00:33.506834 amqp.go:148: connetion is closed consumingException (501) Reason: "read tcp 192.168.25.53:58600->192.168.188.46:5672: read: operation timed out"
+[INFO ]2020/08/27 11:00:33.506902 amqp.go:196: recv 
+[ERROR]2020/08/27 11:00:33.506938 amqp.go:199: failed to JSON data.Body: EOF[]
+[INFO ]2020/08/27 11:00:33.506987 amqp.go:204: producing return
+[INFO ]2020/08/27 11:00:33.507025 amqp.go:82: connect to rabbitmq server ...
+[INFO ]2020/08/27 11:00:33.507077 amqp.go:185: producing return
+[INFO ]2020/08/27 11:00:34.577640 amqp.go:85: connect rabbitmq success
+[INFO ]2020/08/27 11:12:07.585388 log.go:116: rotation log

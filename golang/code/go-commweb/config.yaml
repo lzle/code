@@ -1,0 +1,38 @@
+addr:
+  host: 192.168.30.47
+  port: 8010
+
+mysql:
+  host: 192.168.188.62
+  port: 3306
+  db:   pbx
+  user: remote
+  passwd: BrK***w8FhamUKRu
+
+logPath:
+  path: /home/log2/go-commonweb/
+
+rabbitmq:
+  host: 192.168.188.48
+  port: 5672
+  vhost: /
+  user: guest
+  passwd: guest
+  serverid: common_web
+  exchange: CTI_and_ARI_exchange
+
+redis:
+  host: 192.168.188.48
+  port: 6379
+  Passwd: tx_1234abc
+
+localRedis:
+  host: 192.168.188.46
+  port: 6379
+  Passwd: tx_1234abc
+
+md5:
+  salt: L9Q1BSeiv7qlNZWL
+
+uploadPath:
+  path: /opt/pbx/media/

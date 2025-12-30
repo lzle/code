@@ -1,0 +1,30 @@
+{
+  "数据库配置": "从数据库中读取信息",
+  "db": {
+    "host":"192.168.188.62",
+    "port" : 3306,
+    "db" : "pbx",
+    "user" : "remote",
+    "passwd" : "BrK***w8FhamUKRu"
+  },
+
+  "rabbitmq配置": "接收发送信息",
+  "amqp": {
+    "host":"192.168.188.46",
+    "port" : 5672,
+    "vhost" : "/",
+    "user" : "guest",
+    "passwd" : "guest",
+    "serverid" : "go-callin",
+    "exchange": "CTI_and_ARI_exchange"
+  },
+
+  "话单配置": "主话单存储路径",
+  "cdr_path":"/cdr/master/",
+
+  "文字转语音": "获取tts内容",
+  "tts_url":"http://127.0.0.1/callin/media",
+
+  "日志配置": "日志路径",
+  "log_path":"/home/log2/go-callin/"
+}
