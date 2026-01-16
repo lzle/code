@@ -18,15 +18,12 @@
 * [运算](#运算)
     * [数字运算](#数字运算)
     * [位运算](#位运算)
-* [所有权和移动](#所有权和移动)
-    * [所有权](#所有权)
+* [所有权](#所有权)
     * [移动](#移动)
-    * [Copy 类型](#copy-类型)
-    * [Rc 和 Arc](#rc-和-arc共享所有权)
-* [引用](#引用)
-    * [引用](#引用)
+    * [Copy类型](#copy-类型)
+    * [Rc和Arc](#rc-和-arc共享所有权)
 * [生命周期](#生命周期)
-    * [引用](#生命周期标注)
+    * [标注](#标注)
 * [特型和泛型](#特型和泛型)
     * [使用特型](#使用特型)
     * [定义和实现特型](#定义和实现特型)
@@ -946,13 +943,13 @@ fn main() {
 }
 ```
 
-## 所有权和移动
+## 所有权
 
-计算机语言不断演变过程中，内存管理出现两张方式：
+计算机语言不断演变过程中，内存管理出现两种方式：
 
-* 垃圾回收机制(GC)，在程序运行时不断寻找不再使用的内存，典型代表：Java、Go
+* 垃圾回收机制(GC)，在程序运行时不断寻找不再使用的内存，典型代表：Java、Go；
 
-* 手动管理内存的分配和释放, 在程序中，通过函数调用的方式来申请和释放内存，典型代表：C++、C
+* 手动管理内存的分配和释放, 在程序中，通过函数调用的方式来申请和释放内存，典型代表：C++、C；
 
 Rust 选择了第三种方式：所有权，它是一种在编译时检查内存安全的系统，不需要垃圾回收机制，也不需要手动管理内存。
 
@@ -964,10 +961,8 @@ Rust 选择了第三种方式：所有权，它是一种在编译时检查内存
 
 * 当这个变量离开作用域，与之关联的值就会被回收（释放资源是安全的）。
 
-### 所有权
-
 但在 Rust 中，所有权的概念被内建在语言之中，并且通过编译期检查确保强制执行。每个值都只有一个决定它生命周期的所有者。
-当所有者被释放，它拥有的值也会同时被释放，在 Rust 中的术语中，释放的行为被称为丢弃（drop）。
+当所有者被释放，它拥有的值也会同时被释放，在 Rust 中的术语中，释放的行为被称为丢弃。
 
 ```rust
 fn print_padovan() {
@@ -980,7 +975,7 @@ fn print_padovan() {
 } // padovan 在这里释放
 ```
 
-Rust  在以下几个方面扩展了所有权的灵活性：
+Rust 在所有权的灵活性方面扩展了几个方面：
 
 * 你可以将值从一个所有者移动到另一个所有者。这允许你构建、更改、拆除所有权树。
 
@@ -992,7 +987,7 @@ Rust  在以下几个方面扩展了所有权的灵活性：
 
 ### 移动
 
-在 Rust里对大多数类型来说，赋值给变量、把值传给函数、或者从函数返回值并不会拷贝这个值：它们只会移动它。
+在 Rust 里对大多数类型来说，赋值给变量、把值传给函数、或者从函数返回值并不会拷贝这个值：它们只会移动它。
 源对象放弃了值的所有权，把所有权转移给了目的对象，同时源对象变为未初始化的状态；
 
 ```rust
@@ -1000,7 +995,7 @@ let s = vec!["udon".to_string(), "ramen".to_string, "soba".to_string()];
 let t = s;
 let u = s; // 编译错误
 ```
-
+ 
 赋值语句 `let t = s`; 把 vector 的三个字段从 s 移动到了 t；现在 t 拥有了这个 vector, s 变成了未初始化的状态。
 如果你尝试使用 s，编译器会报错。
 
@@ -1014,7 +1009,7 @@ let t = s.clone();
 let u = s.clone();
 ```
 
-如果你把值移动进一个已经被初始化的变量，Rust 会 drop 变量之前的值。例如：
+如果你把值移动进一个已经被初始化的变量，Rust 会丢弃变量之前的值。例如：
 
 ```rust
 let mut s = "Govinda".to_string();
@@ -1023,23 +1018,22 @@ s = "Siddhartha".to_string(); // 值"Govinda"在这里 drop
 
 Rust 在几乎所有场景下都使用 move。向函数传参会把所有权移动给函数的参数；从函数返回值会把所有权移动给调用者；创建一个元组会把值移动给元组，等等。
 
-```
+```rust
 struct Person { name: String, birth: i32 }
 let mut composers = Vec::new();
-composers.push(Person { name: "Palestrina".to_string(),
-birth: 1525 });
+composers.push(Person { name: "Palestrina".to_string(), birth: 1525 });
 ```
 
-#### 移动与控制流
+#### 控制流
 
-如果一个变量在if 表达式的条件判断之后还是有值的，那我们在两个分支中都可以使用它：
+如果一个变量在 `if` 表达式的条件判断之后还是有值的，那我们在两个分支中都可以使用它：
 
 ```rust
 let x = vec![10, 20, 30];
 if c {
-    f(x); // ... 在这里移动 x的值是 ok的
+    f(x); // ... 在这里移动 x的值是允许的
 } else {
-    g(x); // ... 在这里移动 x的值是 ok的
+    g(x); // ... 在这里移动 x的值是允许的
 }
 h(x); // 这里 x 不能再使用，因为它已经被移动了
 ```
@@ -1053,10 +1047,10 @@ while f() {
 }
 ``` 
 
-#### 移动与索引
+#### 索引
 
 我们已经提到过移动会将源对象设置为未初始化状态，目的对象会获得值的所有权。
-但并不是每一种值的所有者都可以设置为未初始化状态。
+但并不是每一种值的所有者都可以被设置为未初始化状态。
 
 ```rust
 let mut v = Vec::new();
@@ -1065,7 +1059,7 @@ for i in 101 .. 106 {
 }
 
 let third = v[2];  // // 错误：不能移动 Vec 的索引
-// let third = &v[2];  // 正确：使用引用
+// let third = &v[2];  // 正确：使用借用
 println!("The third element is {}", third);
 
 // error[E0507]: cannot move out of index of `Vec<String>`
@@ -1077,10 +1071,10 @@ println!("The third element is {}", third);
 // | help: consider borrowing here: `&v[2]`
 ```
 
-有三种方法解决这个问题：
+有三种方法解决这个问题，例如：
 
-```
-// 创建一个 string的 vector："101", "102", ... "105"
+```rust
+// 创建一个 string 的 vector："101", "102", ... "105"
 let mut v = Vec::new();
     for i in 101 .. 106 { v.push(i.to_string());
 }
@@ -1101,29 +1095,79 @@ assert_eq!(third, "103");
 assert_eq!(v, vec!["101", "104", "substitute"]);
 ```
 
-这三种方法都从 vector中移出一个元素，但仍然保证 vector处于没有空隙的状态，可能长
-度还会变小。
+上面方法都从 vector 中移出一个元素，但仍然保证 vector 处于没有空隙的状态，可能长度还会变小。
 
 ### Copy 类型
 
 对于简单类型例如整数或字符，移动并不是必须的，这些类型被称为 Copy 类型。
 
 ```rust
-let string1 = "somnambulance".to_string();
-let string2 = string1;
+let bool1 = true;
+let bool2 = bool1;
 
 let num1: i32 = 36;
-let num2 = num1;
-
+let num2: i32 = num1;
 ```
 
 Rust 赋予一个 Copy 类型的值会拷贝它，而不是移动它。
 
-<div align=center><img src="./images/copy.png" width=400></div>
+<div align=center><img src="./images/copy.png" width=500></div>
 
-标准的 Copy 类型包括所有的机器整数和浮点数类型、char 和 bool 类型，以及少数其他类
-型。所有元素都是 Copy 类型的元组或数组也是 Copy 类型。
+标准的 Copy 类型包括所有的机器整数和浮点数类型、char 和 bool 类型，以及少数其他类型。所有元素都是 Copy 类型的元组或数组也是 Copy 类型。
 
+可以通过下面的代码快速验证一个数据结构是否实现了 Copy trait（拷贝类型）：
+
+```rust
+fn is_copy<T: Copy>() {}
+
+fn types_impl_copy_trait() {
+    is_copy::<bool>();
+    is_copy::<char>();
+
+    // all iXX and uXX, usize/isize, fXX implement Copy trait
+    is_copy::<i8>();
+    is_copy::<u64>();
+    is_copy::<i64>();
+    is_copy::<usize>();
+
+    // function (actually a pointer) is Copy
+    is_copy::<fn()>();
+
+    // raw pointer is Copy
+    is_copy::<*const String>();
+    is_copy::<*mut String>();
+
+    // immutable reference is Copy
+    is_copy::<&[Vec<u8>]>();
+    is_copy::<&String>();
+
+    // array/tuple with values which is Copy is Copy
+    is_copy::<[u8; 4]>();
+    is_copy::<(&str, &str)>();
+}
+
+fn types_not_impl_copy_trait() {
+    // unsized or dynamic sized type is not Copy
+    is_copy::<str>();
+    is_copy::<[u8]>();
+    is_copy::<Vec<u8>>();
+    is_copy::<String>();
+
+    // mutable reference is not Copy
+    is_copy::<&mut String>();
+
+    // array / tuple with values that not Copy is not Copy
+    is_copy::<[Vec<u8>; 4]>();
+    is_copy::<(String, u32)>();
+}
+
+fn main() {
+    types_impl_copy_trait();
+    types_not_impl_copy_trait();
+}
+```
+
+> 可变的类型不会实现 Copy trait。
 
 ### Rc 和 Arc：共享所有权
 
@@ -1149,18 +1193,17 @@ let u: Rc<String> = s.clone();
 这三个 Rc<String> 指针都指向内存中的同一块内存，这块内存里存储了一个引用计数和一个 String。通常的所有权规也适用于 Rc 指针，当最后一个 Rc 指针 drop 时，Rust会同时 drop 掉 String。
 
 
-## 引用 
+## 借用
 
 引入引用就是为了解决所有权禁止共享的问题，引用是一种类型，借用是动作。
 
-
 ## 生命周期
 
-### 生命周期标注
+### 标注
 
 引入生命周期标注，是为了解决编译器需要能够检测代码中是否存在悬垂引用的风险，并在检测到此类风险时拒绝编译。
 
-通过经典的 longest 函数来了解生命周期标注的用处：
+通过经典的 `longest` 函数来了解生命周期标注的用处。
 
 ```rust
 fn longest(x: &str, y: &str) -> &str {
