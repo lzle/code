@@ -729,8 +729,7 @@ fn main() {
 
 ### 切片
 
-切片的引用是胖指针：一个包含指向切片中第一个元素的指针和切片中元素数量的双字
-值。
+切片的引用是胖指针：切片中第一个元素的指针和切片中元素数量。
 
 假设你正在运行下列代码：
 
@@ -744,11 +743,10 @@ let sa: &[f64] = &a;
 
 上面代码运行完后，内存布局如下：
 
-![slice](/images/slice.png)
+<div align=center><img src="./images/slice.png" width=400></div>
 
-一个普通的引用是一个指向单个值的无所有权指针，而一个切片的引用是一个指向内存中
-连续的范围的指针。这使得如果你想写一个处理数组或 vector的函数，那么切片引用将是一
-个很好的选择。例如，这里有一个函数打印出一系列值，每个单独一行：
+一个普通的引用是一个指向单个值的无所有权指针，而一个切片的引用是一个指向内存中连续的范围的指针。
+这使得如果你想写一个处理数组或 vector的函数，那么切片引用将是一个很好的选择。例如，这里有一个函数打印出一系列值，每个单独一行：
     
 ```rust
 fn print(n: &[f64]) {
@@ -809,8 +807,7 @@ fn main() {
 
 #### 字节串
 
-以 b 前缀开头的字符串字面量是字节字符串。这种字符串实际上是u8 值的切片——也就是
-字节流——而不是 Unicode 文本：
+以 b 前缀开头的字符串字面量是字节字符串。这种字符串实际上是u8 值的切片——也就是字节流——而不是 Unicode 文本：
 
 ```rust
 let method = b"GET";
@@ -819,9 +816,8 @@ assert_eq!(method, &[b'G', b'E', b'T']);
 
 #### 内存中的字符串
 
-Rust的字符串是 Unicode 字符的序列，但它并不是作为char 的数组存储在内存中。事实上
-它使用 UTF-8 编码存储，这是一种可变长度的编码。每一个 ASCII 字符被存储为一个字节，
-其他字符可能会占据多个字节。
+Rust的字符串是 Unicode 字符的序列，但它并不是作为char 的数组存储在内存中。事实上它使用 UTF-8 编码存储，
+这是一种可变长度的编码。每一个 ASCII 字符被存储为一个字节，其他字符可能会占据多个字节。
 
 下图显示下面代码创建的 String 和 &str:
 
@@ -831,18 +827,14 @@ let oodles = &noodles[1..];
 let poodles = "ನಮಸ್ಕಾರ"
 ```
 
-![alt text](/images/string.png)
+<div align=center><img src="./images/string.png" width=400></div>
 
 noodles 是一个拥有 8 个字节大小的缓冲区的 String，其中 7 个字节已经被使用。你可以将String 想象为保证内容是有效 UTF-8 编码的 Vec<u8>；事实上，String 就是这么实现的。
 
 一个 &str（读作“stir”或者“字符串切片”）是一个指向其他值拥有的UTF-8 文本的引用：
-它“借用”了这段文本。在这个例子中，oodles 是一个指向 noodles 所持有的文本中的最后六
-个字节的 &str，因此它表示文本“oodles”。就像其他切片引用一样，&str 是一种胖指针，包
-括实际数据的地址和长度。你可以将 &str 看作一个保证内容为合法的 UTF-8 编码的 &[u8]。
+它“借用”了这段文本。在这个例子中，oodles 是一个指向 noodles 所持有的文本中的最后六个字节的 &str，因此它表示文本“oodles”。就像其他切片引用一样，&str 是一种胖指针，包括实际数据的地址和长度。你可以将 &str 看作一个保证内容为合法的 UTF-8 编码的 &[u8]。
 
-字符串字面量是一个指向预先分配好内存的文本的 &str，实际的文本通常和程序的机器码
-一起存储到只读的内存区域。在之前的例子中，poodles 是一个字符串字面量，指向程序运
-行时就已经被创建好并且持续到程序退出的 7 个字节。
+字符串字面量是一个指向预先分配好内存的文本的 &str，实际的文本通常和程序的机器码一起存储到只读的内存区域。在之前的例子中，poodles 是一个字符串字面量，指向程序运行时就已经被创建好并且持续到程序退出的 7 个字节。
 
 一个 String 或 &str 的 `len()` 方法返回它的长度。但这个长度是以字节为单位，而不是以
 字符为单位：
@@ -857,7 +849,7 @@ assert_eq!("ನಮಸ್ಕಾರ".len(), 21);
 
 &str 和 &[T] 很像：都是一个指向某些数据的胖指针。String 类似于 Vec<T>，如表 3-11所示。
 
-<img src="/images/string-vec.png" alt="string-vec" width="650">
+<div align=center><img src="./images/string-vec.png" width=400></div>
 
 类似于 Vec，每个 String 都有它自己的在堆上分配的缓冲区，这个缓冲区不和其他任
 何 String 共享。
@@ -1017,7 +1009,7 @@ let u = s; // 编译错误
 
 赋值语句 `let t = s`; 把 vector 的三个字段从 s 移动到了 t；现在 t 拥有了这个 vector, s 变成了未初始化的状态。如果你尝试使用 s，编译器会报错。
 
-<img src="/images/move.png" alt="move" width="650">
+<div align=center><img src="./images/move.png" width=400></div>
 
 可以对元素进行深拷贝，这样就不会移动所有权：
 
@@ -1134,7 +1126,7 @@ let num2 = num1;
 
 Rust 赋予一个 Copy 类型的值会拷贝它，而不是移动它。
 
-<img src="/images/copy.png" alt="copy" width="650">
+<div align=center><img src="./images/copy.png" width=400></div>
 
 标准的 Copy 类型包括所有的机器整数和浮点数类型、char 和 bool 类型，以及少数其他类
 型。所有元素都是 Copy 类型的元组或数组也是 Copy 类型。
@@ -1159,7 +1151,7 @@ let u: Rc<String> = s.clone();
 个引用计数。克隆一个Rc<T> 类型的值并不意味着拷贝 T，它只是简单的创建另一个指向它的
 指针，并且递增引用计数。
 
-<img src="/images/rc.png" alt="rc" width="650">
+<div align=center><img src="./images/rc.png" width=400></div>
 
 这三个 Rc<String> 指针都指向内存中的同一块内存，这块内存里存储了一个引用计数和一个 String。通常的所有权规也适用于 Rc 指针，当最后一个 Rc 指针 drop 时，Rust会同时 drop 掉 String。
 
@@ -1300,7 +1292,7 @@ fn main() {
 
 在内存中，特型对象是一个胖指针，由指向值的指针和指向该值类型的虚表指针组成。
 
-<img src="/images/trait-mem.png" alt="trait-mem" width="650">
+<div align=center><img src="./images/trait-mem.png" width=400></div>
 
 Rust 会在需要时自动将普通引用转换为特型对象，这个过程叫作隐式转换。
 
@@ -1911,6 +1903,11 @@ fn main() {
 ## 相关链接
 
 [crates.io](https://crates.io/)
+
 [The Rust Edition Guide](https://doc.rust-lang.org/edition-guide/)
+
+[Rust语言圣经](https://course.rs)
+
 [标准项目目录结构](https://course.rs/cargo/guide/package-layout.html)
+
 [变更镜像地址](https://course.rs/first-try/slowly-downloading.html)
