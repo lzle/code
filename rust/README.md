@@ -27,6 +27,7 @@
     * [使用引用](#使用引用)
     * [引用安全](#引用安全)
     * [共享与可变](#共享与可变)
+* [Option](#option)
 * [生命周期](#生命周期)
     * [标注](#标注)
 * [特型和泛型](#特型和泛型)
@@ -1431,6 +1432,52 @@ println!("{}", r1); // 可以在这里使用r1
 ```
 
 可以从共享引用中重新借入可变引用：
+
+
+## Option
+
+处理 Option 类型中获取值并进行处理的的几种常见方式。
+
+常见的 `if let` 语句：
+
+```rust
+let body: &Option<Vec<u8>> = &Some(vec![1, 2, 3]);
+
+let (length, md5) = if let Some(body_bytes) = body {
+    let length = body_bytes.len();
+    let md5 = format!("{:x}", Md5::digest(body_bytes));
+    (length, md5)
+} else {
+    (0, String::new())
+};
+```
+
+简洁的写 `map` 方法:
+
+```rust
+let body: &Option<Vec<u8>> = &Some(vec![1, 2, 3]);
+
+let (length, md5) = body.as_ref()
+    .map(|body_bytes| {
+        let md5_hash = Md5::digest(body_bytes);
+        (body_bytes.len(), format!("{:x}", md5_hash))
+    })
+    .unwrap_or((0, String::new()));
+```
+
+最清晰的 `match` 方法：
+
+```rust
+let body: &Option<Vec<u8>> = &Some(vec![1, 2, 3]);
+
+let (length, md5) = match body {
+    Some(body_bytes) => {
+        let md5_hash = Md5::digest(body_bytes);
+        (body_bytes.len(), format!("{:x}", md5_hash))
+    }
+    None => (0, String::new()),
+};
+```
 
 ## 生命周期
 
