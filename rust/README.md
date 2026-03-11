@@ -1105,23 +1105,46 @@ assert_eq!(v, vec!["101", "104", "substitute"]);
 
 ### Copy 类型
 
-对于简单类型例如整数或字符，移动并不是必须的，这些类型被称为 Copy 类型。
+对于简单类型例如整数或字符，进行赋值或函数传参，会进行数据复制而不会移动所有权。
 
 ```rust
-let bool1 = true;
-let bool2 = bool1;
+fn main() {
+    let bool1 = true;
+    let bool2 = bool1;
+    
+    let num1: i32 = 36;
+    let num2: i32 = num1;
 
-let num1: i32 = 36;
-let num2: i32 = num1;
+    println!("bool1 = {}",bool1);
+    println!("num1 = {}",num1);
+}
+// bool1 = true
+// num1 = 36
+```
+
+函数传参时，会进行数据复制。
+
+```rust
+fn print_num(x: i32) {
+    println!("{}", x);
+}
+
+fn main() {
+    let a = 10;
+    print_num(a);
+    println!("a = {}", a);
+}
+// 10
+// a = 10
 ```
 
 Rust 赋予一个 Copy 类型的值会拷贝它，而不是移动它。
 
 <div align=center><img src="./images/copy.png" width=500></div>
 
-标准的 Copy 类型包括所有的机器整数和浮点数类型、char 和 bool 类型，以及少数其他类型。所有元素都是 Copy 类型的元组或数组也是 Copy 类型。
+标准的 Copy 类型包括所有的整数和浮点数类型、char 和 bool 类型，以及少数其他类型。所有元素都是 Copy 类型的元组或数组也是 Copy 类型。
 
-可以通过下面的代码快速验证一个数据结构是否实现了 Copy trait（拷贝类型）：
+可以通过下面的代码快速验证一个数据结构是否实现了 Copy trait：
 
 ```rust
 fn is_copy<T: Copy>() {}
@@ -1215,6 +1238,11 @@ fn main() {
 
     println!("count = {}", Rc::strong_count(&a));
 }
+
+// count = 1
+// count = 2
+// count = 3
+// count = 2
 ```
 
 ## 引用
