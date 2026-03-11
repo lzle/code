@@ -1177,9 +1177,9 @@ fn main() {
 
 ### Rc 和 Arc：共享所有权
 
-Rust提供了引用计数类型 Rc 和 Arc。Rc 和 Arc 类型非常相似，它们唯一的不同之处在于 Arc 可以直接安全地在线程之间共享，名称 Arc 是原子引用计数的缩写，Rc 则使用更快一些的非线程安全代码来更新引用计数。
+Rust 提供了引用计数类型 Rc 和 Arc (Atomic Reference Count)。Rc 和 Arc 类型非常相似，它们唯一的不同之处在于 Arc 可以直接安全地在线程之间共享。
 
-可以使用引用计数来管理值的生存周期，这样就可以在程序的多个部分之间共享值的所有权。
+可以使用引用计数来管理值的生存周期，这样就可以在多个变量同时拥有同一数据。
 
 ```rust
 use std::rc::Rc;
@@ -1190,14 +1190,32 @@ let t: Rc<String> = s.clone();
 let u: Rc<String> = s.clone();
 ```
 
-对于任意类型 T，一个 Rc<T> 值是一个指向在堆上分配的 T 类型值的指针，同时还附有一
-个引用计数。克隆一个Rc<T> 类型的值并不意味着拷贝 T，它只是简单的创建另一个指向它的
-指针，并且递增引用计数。
+对于任意类型 T，一个 `Rc<T>` 值是一个指向在堆上分配的 T 类型值的指针，同时还附有一个引用计数。
+克隆一个 `Rc<T>` 类型的值并不意味着拷贝 T，它只是简单的创建另一个指向它的指针，并且递增引用计数。
 
 <div align=center><img src="./images/rc.png" width=400></div>
 
-这三个 Rc<String> 指针都指向内存中的同一块内存，这块内存里存储了一个引用计数和一个 String。通常的所有权规也适用于 Rc 指针，当最后一个 Rc 指针 drop 时，Rust会同时 drop 掉 String。
+这三个 `Rc<String>` 指针都指向内存中的同一块内存，这块内存里存储了一个引用计数和一个 `String`。通常的所有权规也适用于 Rc 指针，当最后一个 Rc 指针丢弃时，Rust会同时丢弃 `String`。
 
+```rust
+use std::rc::Rc;
+
+fn main() {
+    let a = Rc::new(String::from("hello"));
+
+    println!("count = {}", Rc::strong_count(&a));
+
+    let b = Rc::clone(&a);
+    println!("count = {}", Rc::strong_count(&a));
+
+    {
+        let c = Rc::clone(&a);
+        println!("count = {}", Rc::strong_count(&a));
+    }
+
+    println!("count = {}", Rc::strong_count(&a));
+}
+```
 
 ## 引用
 
@@ -1430,9 +1448,6 @@ let r1 = &m.1; // 正确: 从可变引用中借入共享引用，并且不能和
 v.1; // 错误：禁止通过其他路径访问
 println!("{}", r1); // 可以在这里使用r1
 ```
-
-可以从共享引用中重新借入可变引用：
-
 
 ## Option
 
