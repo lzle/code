@@ -15,6 +15,8 @@
     * [vector](#vector)
     * [切片](#切片)
     * [字符串](#字符串)
+    * [HashMap](#HashMap)
+    * [BTreeMap](#BTreeMap)
 * [运算](#运算)
     * [数字运算](#数字运算)
     * [位运算](#位运算)
@@ -28,6 +30,7 @@
     * [引用安全](#引用安全)
     * [共享与可变](#共享与可变)
 * [Option](#option)
+* [Result](#result)
 * [生命周期](#生命周期)
     * [标注](#标注)
 * [特型和泛型](#特型和泛型)
@@ -877,6 +880,129 @@ assert_eq!(bits.concat(), "venividivici");
 assert_eq!(bits.join(", "), "veni, vidi, vici");
 ```
 
+### HashMap
+
+HashMap 会将键和值存储在哈希表中，因此它需要一个实现了 Hash 和 Eq 的键类型 K，即用来求哈希与判断相等性的标准库特型。
+
+基本使用：
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    // 创建 HashMap
+    let mut map = HashMap::new();
+
+    // 插入键值对
+    map.insert("apple", 3);
+    map.insert("banana", 5);
+
+    // 获取值
+    if let Some(v) = map.get("apple") {
+        println!("apple = {}", v);
+    }
+
+    // 遍历
+    for (key, value) in &map {
+        println!("{}: {}", key, value);
+    }
+
+    // 删除键
+    map.remove("banana");
+}
+```
+
+`.entry()` + `.or_insert()` 方法可以用来快速检查一个键是否存在，如果不存在则插入一个默认值。
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    // let mut map = HashMap::new();
+
+    let mut map = HashMap::new();
+
+    // 插入或修改
+    map.entry("apple").or_insert(0);
+    // * 对 or_insert(0) 的返回值解引用
+    *map.entry("banana").or_insert(0) += 2;
+    
+    println!("{:?}", map); // {"apple": 0, "banana": 2}
+}
+```
+
+`.entry()` + `.and_modify()` 修改已存在的键值，或者不做任何操作。
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    let mut map = HashMap::new();
+    map.entry("apple").or_insert(0);
+    map.entry("banana").and_modify(|v| *v += 2);
+    println!("{:?}", map); // {"apple": 0}
+}
+```
+
+`.get()` + `.unwrap_or()` / `.unwrap_or_else()` 方法可以用来快速获取一个键的值，如果不存在则返回一个默认值。
+
+```rust
+use std::collections::HashMap;
+
+fn default_if_missing() -> i32 {
+    7
+}
+
+fn main() {
+    let mut map = HashMap::new();
+    map.insert("apple", 10);
+    map.insert("banana", 20);
+
+    let apple = map.get("apple").unwrap_or(&0);
+    let cherry = map.get("cherry").copied().unwrap_or(0);
+
+    let lime = map.get("lime").copied().unwrap_or_else(|| default_if_missing());
+
+    println!("apple={apple}, cherry={cherry}, lime={lime}"); // apple=10, cherry=0, lime=7
+}
+```
+
+`.contains_key()` 方法可以用来快速检查一个键是否存在。
+
+```rust
+if map.contains_key("apple") {
+    println!("apple exists");
+}
+```
+
+`.entry()` + `.or_default()` 如果值类型实现了 Default，可以快速初始化。
+
+```rust
+use std::collections::HashMap;
+
+fn main() {
+    let mut map: HashMap<&str, Vec<i32>> = HashMap::new();
+    map.entry("numbers").or_default().push(42);
+    println!("{:?}", map); // {"numbers": [42]}
+}
+```
+
+`.keys()`, `.values()`, `.iter()` 。
+
+```rust
+for key in map.keys() {
+    println!("key: {}", key);
+}
+
+for value in map.values() {
+    println!("value: {}", value);
+}
+
+for (k, v) in map.iter() {
+    println!("{}: {}", k, v);
+}
+```
+
 ## 运算
 
 ### 数字运算
@@ -1481,6 +1607,34 @@ println!("{}", r1); // 可以在这里使用r1
 
 处理 Option 类型中获取值并进行处理的的几种常见方式。
 
+在能够确定此处一定是 `Some` 时，可以用 `unwrap` 直接取出内部的 `T`，类型从 `Option<T>` 变为 `T`。若为 `None` 会在运行时 `panic`，因此只适合不变式保证、测试代码，或紧跟在已排除 `None` 的分支之后；需要同时表达 `None` 语义时，仍应使用下面的 `if let`、`match` 或带默认值的 `unwrap_or` 等写法。
+
+```rust
+let body: Option<Vec<u8>> = Some(vec![1, 2, 3]);
+
+let body_bytes = body.unwrap();
+let length = body_bytes.len();
+
+// let empty: Option<Vec<u8>> = None;
+// empty.unwrap(); // panic: called `Option::unwrap()` on a `None` value
+```
+
+在返回 `Option<T>` 的函数或闭包中，对 `Option` 使用 `?`：若为 `Some` 则解包得到内层值，若为 `None` 则立刻从当前函数返回 `None`，把「没有值」向外传播，而不会 `panic`。要求当前函数的返回类型是 `Option`，且 `?` 右侧的 `Option` 内层类型与这里的 `T` 一致。
+
+```rust
+fn combined(a: Option<i32>, b: Option<i32>) -> Option<i32> {
+    let x = a?;
+    let y = b?;
+    Some(x + y)
+}
+
+// combined(None, Some(1));    -> None，在 a? 提前返回
+// combined(Some(1), None);    -> None，在 b? 提前返回
+// combined(Some(1), Some(2)); -> Some(3)
+```
+
+例如 `a` 为 `None` 时，`a?` 会让整个函数在此处直接返回 `None`，后面的 `b?` 与 `Some(x + y)` 都不会执行；只有两步 `?` 都拿到 `Some` 里的值时，才会执行到最后的 `Some(x + y)`。
+
 常见的 `if let` 语句：
 
 ```rust
@@ -1520,6 +1674,28 @@ let (length, md5) = match body {
     }
     None => (0, String::new()),
 };
+```
+
+## Result
+
+在能够确定此处一定是 `Ok` 时，可以用 `unwrap` 直接取出内部的 `T`，类型从 `Result<T, E>` 变为 `T`。若为 `Err` 会在运行时 `panic`，panic 信息里会带上 `E` 的 `Debug` 表示；因此只适合不变式保证、测试代码，或已在上层保证不会返回 `Err` 的路径。需要按错误语义恢复、记录或向上传播时，应使用 `match`、`?` 或 `unwrap_or_else` 等写法。
+
+```rust
+let n: Result<i32, &str> = Ok(7);
+let v = n.unwrap();
+
+// let err: Result<i32, &str> = Err("boom");
+// err.unwrap(); // panic: called `Result::unwrap()` on an `Err` value: "boom"
+```
+
+在返回 `Result<T, E>` 的函数中，对 `Result` 使用 `?`：若为 `Ok` 则解包得到 `T`，若为 `Err` 则尽早从当前函数返回该错误（经 `From` 等转换后需与外层的 `E` 一致）；错误路径不会 `panic`，适合在业务代码里替代层层 `match` 传播错误。与 `unwrap` 不同，`?` 把失败交给调用方处理。
+
+```rust
+fn parse_twice(a: &str, b: &str) -> Result<(i32, i32), std::num::ParseIntError> {
+    let x: i32 = a.parse()?;
+    let y: i32 = b.parse()?;
+    Ok((x, y))
+}
 ```
 
 ## 生命周期
